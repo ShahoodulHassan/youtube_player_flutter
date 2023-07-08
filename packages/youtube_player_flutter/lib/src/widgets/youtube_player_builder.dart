@@ -17,11 +17,16 @@ class YoutubePlayerBuilder extends StatefulWidget {
   /// Callback to notify that the player has exited fullscreen.
   final VoidCallback? onExitFullScreen;
 
+  /// Flag to know whether to turn fullscreen mode on when the device is in landscape.
+  /// Default is false
+  final bool goFullScreenOnLandscape;
+
   /// Builder for [YoutubePlayer] that supports switching between fullscreen and normal mode.
   const YoutubePlayerBuilder({
     Key? key,
     required this.player,
     required this.builder,
+    this.goFullScreenOnLandscape = false,
     this.onEnterFullScreen,
     this.onExitFullScreen,
   }) : super(key: key);
@@ -48,16 +53,18 @@ class _YoutubePlayerBuilderState extends State<YoutubePlayerBuilder>
 
   @override
   void didChangeMetrics() {
-    final physicalSize = SchedulerBinding.instance.window.physicalSize;
-    final controller = widget.player.controller;
-    if (physicalSize.width > physicalSize.height) {
-      controller.updateValue(controller.value.copyWith(isFullScreen: true));
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      widget.onEnterFullScreen?.call();
-    } else {
-      controller.updateValue(controller.value.copyWith(isFullScreen: false));
-      SystemChrome.restoreSystemUIOverlays();
-      widget.onExitFullScreen?.call();
+    if (widget.goFullScreenOnLandscape) {
+      final physicalSize = SchedulerBinding.instance.window.physicalSize;
+      final controller = widget.player.controller;
+      if (physicalSize.width > physicalSize.height) {
+        controller.updateValue(controller.value.copyWith(isFullScreen: true));
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+        widget.onEnterFullScreen?.call();
+      } else {
+        controller.updateValue(controller.value.copyWith(isFullScreen: false));
+        SystemChrome.restoreSystemUIOverlays();
+        widget.onExitFullScreen?.call();
+      }
     }
     super.didChangeMetrics();
   }

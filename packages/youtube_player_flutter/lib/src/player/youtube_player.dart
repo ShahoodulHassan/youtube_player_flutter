@@ -240,7 +240,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         controller: controller,
         child: Container(
           color: Colors.black,
-          width: widget.width ?? MediaQuery.of(context).size.width,
+          width: widget.width ?? MediaQuery.sizeOf(context).width,
           child: _buildPlayer(
             errorWidget: Container(
               color: Colors.black87,
@@ -300,7 +300,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         children: [
           Transform.scale(
             scale: controller.value.isFullScreen
-                ? (1 / _aspectRatio * MediaQuery.of(context).size.width) /
+                ? (1 / _aspectRatio * MediaQuery.sizeOf(context).width) /
                     MediaQuery.of(context).size.height
                 : 1,
             child: RawYoutubePlayer(

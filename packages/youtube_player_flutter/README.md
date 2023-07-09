@@ -10,6 +10,9 @@
 
 
 Flutter plugin for playing or streaming YouTube videos inline using the official [**iFrame Player API**](https://developers.google.com/youtube/iframe_api_reference).
+> This fork introduces a flag 'goFullScreenOnLandscape' with default value of false, that fixes 
+> the problem where fullscreen mode is truned on and the player is scaled up when the device is in 
+> landscape mode.
 
 Supported Platforms:
 * **Android** 
